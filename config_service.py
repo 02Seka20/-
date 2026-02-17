@@ -5,7 +5,7 @@ import requests
 
 app = FastAPI()
 
-COMPONENTS_URL = "http://127.0.0.1:8001/components"
+COMPONENTS_URL = "https://pc-microservices.onrender.com/components"
 
 # -----------------------------
 # Модель входных данных
