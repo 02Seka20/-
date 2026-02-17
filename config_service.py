@@ -5,13 +5,6 @@ import requests
 
 app = FastAPI()
 
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import List
-import requests
-
-app = FastAPI()
-
 ANALYSIS_URL = "https://pc-microservices.onrender.com/analyze"
 
 # -----------------------------
@@ -26,13 +19,14 @@ class ConfigurationRequest(BaseModel):
 @app.post("/configurations")
 def create_configuration(config: ConfigurationRequest):
     try:
+        # Отправляем POST в analysis_service
         response = requests.post(
             ANALYSIS_URL,
             json={"component_ids": config.component_ids}
         )
         return response.json()
-    except Exception:
-        return {"error": "Analysis service unavailable"}
+    except Exception as e:
+        return {"error": f"Analysis service unavailable: {str(e)}"}
 
 # -----------------------------
 # Проверка работы
