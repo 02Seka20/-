@@ -12,15 +12,15 @@ class ConfigurationRequest(BaseModel):
 
 @app.post("/configurations")
 def create_configuration(config: ConfigurationRequest):
-    try:
-        response = requests.post(
-            ANALYSIS_URL,
-            json={"components": config.component_ids}  # <--- важно
-        )
-        return response.json()
-    except Exception as e:
-        return {"error": f"Analysis service unavailable: {str(e)}"}
-
-@app.get("/")
-def root():
-    return {"message": "Configuration Service is running"}
+    # Мок ответа от analysis_service
+    selected_components = [
+        {"id": i, "name": f"Component {i}", "price": i*100, "power": i*50}
+        for i in config.component_ids
+    ]
+    total_price = sum(c["price"] for c in selected_components)
+    total_power = sum(c["power"] for c in selected_components)
+    return {
+        "selected_components": selected_components,
+        "total_price": total_price,
+        "total_power": total_power
+    }
