@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PC Configurator</title>
+</head>
+<body>
+<h2>PC Configuration</h2>
+
+<button onclick="send()">Analyze</button>
+
+<pre id="result"></pre>
+
+<script>
+async function send() {
+    const response = await fetch("http://localhost:8001/configurations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ component_ids: [1,2] })
+    });
+
+    const data = await response.json();
+    document.getElementById("result").innerText = JSON.stringify(data, null, 2);
+}
+</script>
+
+</body>
+</html>
