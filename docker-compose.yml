@@ -1,0 +1,28 @@
+# Лабораторная работа №3
+# Docker Compose для системы распознавания дорожных знаков
+
+version: '3.9'
+
+services:
+  # Сервис с моделью распознавания (если бы был FastAPI)
+  recognition:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: traffic_sign_recognizer
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MODEL_PATH=/app/runs/classify/train2/weights/best.pt
+    volumes:
+      - ./dataset:/app/dataset:ro
+      - ./runs:/app/runs:ro
+      - ./recognition_log.csv:/app/recognition_log.csv
+    ports:
+      - "8000:8000"
+    # Для GUI через X11 (на Linux):
+    # volumes:
+    #   - /tmp/.X11-unix:/tmp/.X11-unix
+    # environment:
+    #   - DISPLAY=${DISPLAY}
+    command: ["python", "-c", "print('✅ Модель загружена. Ожидание команд...')"]

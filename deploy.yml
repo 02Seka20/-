@@ -1,0 +1,17 @@
+---
+- name: Deploy Traffic Sign Recognizer
+  hosts: server
+  become: yes
+  tasks:
+    - name: Pull Docker image
+      docker_image:
+        name: 02seka20/traffic_sign_recognizer
+        tag: latest
+        source: pull
+
+    - name: Run container
+      docker_container:
+        name: traffic_sign_recognizer
+        image: 02seka20/traffic_sign_recognizer:latest
+        state: started
+        restart_policy: unless-stopped
